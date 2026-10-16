@@ -11,3 +11,13 @@ def test_period_at_end():
 def test_period_at_end():
     text = "Хлеб, который не съели\nТеперь он светит."
     assert len(check_post(text)) == 1
+
+
+def test_ellipsis_symbol_allowed():
+    text = "Хлеб, который не съели…\nТеперь он светит"
+    assert check_post(text) == []
+
+
+def test_ellipsis_three_dots_allowed():
+    text = "Хлеб, который не съели...\nТеперь он светит"
+    assert check_post(text) == []
