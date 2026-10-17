@@ -1,31 +1,11 @@
+import pytest
 from post_checker import check_post
-
-def test_clean_post():
-    text = "Хлеб, который не съели\nТеперь он светит"
-    assert check_post(text) == []
-def test_period_at_end():
-    text = "Хлеб, который не съели\nТеперь он светит."
-    assert check_post(text) == []
 
 
 def test_period_at_end():
     text = "Хлеб, который не съели\nТеперь он светит."
     assert len(check_post(text)) == 1
 
-
-def test_ellipsis_symbol_allowed():
-    text = "Хлеб, который не съели…\nТеперь он светит"
-    assert check_post(text) == []
-
-
-def test_ellipsis_three_dots_allowed():
-    text = "Хлеб, который не съели...\nТеперь он светит"
-    assert check_post(text) == []
-
-
-def test_exactly_limit_ok():
-    text = "а" * 2200
-    assert check_post(text) == []
 
 def test_too_long():
     text = "а" * 2201
@@ -36,6 +16,13 @@ def test_banned_phrase():
     text = "Светильник готов\nЗаказ — Пишите в Телеграм"
     assert len(check_post(text)) == 1
 
-def test_telegram_word_alone_ok():
-    text = "Нас читают в телеграме"
+
+@pytest.mark.parametrize("text", [
+    "Хлеб, который не съели\nТеперь он светит",
+    "Хлеб, который не съели…\nТеперь он светит",
+    "Хлеб, который не съели...\nТеперь он светит",
+    "а" * 2200,
+    "Нас читают в телеграме",
+], ids=["clean", "ellipsis_char", "three_dots", "exactly_2200", "telegram_word"])
+def test_clean_posts(text):
     assert check_post(text) == []
