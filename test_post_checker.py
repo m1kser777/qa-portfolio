@@ -30,3 +30,12 @@ def test_exactly_limit_ok():
 def test_too_long():
     text = "а" * 2201
     assert len(check_post(text)) == 1
+
+
+def test_banned_phrase():
+    text = "Светильник готов\nЗаказ — Пишите в Телеграм"
+    assert len(check_post(text)) == 1
+
+def test_telegram_word_alone_ok():
+    text = "Нас читают в телеграме"
+    assert check_post(text) == []
