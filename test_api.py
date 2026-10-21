@@ -25,3 +25,13 @@ def test_create_post():
     data = response.json()
     assert data["title"] == new["title"]
     assert "id" in data
+
+
+def test_post_letters_instead_of_id():
+    response = requests.get(BASE + "/posts/abc")
+    assert response.status_code == 404  # впиши код, который увидел
+
+
+def test_response_fast():
+    response = requests.get(BASE + "/posts/1")
+    assert response.elapsed.total_seconds() < 2
